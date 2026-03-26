@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, Users, ShieldCheck } from "lucide-react";
 import heroFarm from "@/assets/hero-farm.jpg";
+import { Link } from "react-router-dom";
 
 const stats = [
   { icon: Users, value: "2,500+", label: "Active Farmers" },
@@ -21,7 +22,7 @@ const HeroSection = () => {
           height={1080}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/70 to-foreground/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent dark:from-black/90 dark:via-black/70 dark:to-black/30" />
       </div>
 
       <div className="container mx-auto px-6  relative z-10">
@@ -44,7 +45,8 @@ const HeroSection = () => {
           >
             From Farm to
             <span className="text-secondary"> Market</span>,
-            <br />Without the
+            <br />
+            Without the
             <span className="text-secondary"> Middleman</span>
           </motion.h1>
 
@@ -55,7 +57,8 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             Connect directly with buyers, get fair prices for your produce, and
-            access real-time market data — all in one platform built for farmers.
+            access real-time market data — all in one platform built for
+            farmers.
           </motion.p>
 
           <motion.div
@@ -64,16 +67,23 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45 }}
           >
-            <Button size="lg" className="text-base gap-2 px-8 py-6 rounded-xl shadow-lg shadow-primary/30">
-              Start Selling Today <ArrowRight size={18} />
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="text-base px-8 py-6 rounded-xl bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground"
-            >
-              Browse as Buyer
-            </Button>
+            <Link to="/auth/signup/farmer">
+              <Button
+                size="lg"
+                className="text-base gap-2 px-8 py-6 rounded-xl shadow-lg shadow-primary/30"
+              >
+                Start Selling Today <ArrowRight size={18} />
+              </Button>
+            </Link>
+            <Link to="/auth/signup/buyer">
+              <Button
+                variant="outline"
+                size="lg"
+                className="text-base px-8 py-6 rounded-xl bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground"
+              >
+                Browse as Buyer
+              </Button>
+            </Link>
           </motion.div>
 
           <motion.div
@@ -88,8 +98,12 @@ const HeroSection = () => {
                   <stat.icon size={20} className="text-secondary" />
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-primary-foreground">{stat.value}</p>
-                  <p className="text-xs text-primary-foreground/60">{stat.label}</p>
+                  <p className="text-xl font-bold text-primary-foreground">
+                    {stat.value}
+                  </p>
+                  <p className="text-xs text-primary-foreground/60">
+                    {stat.label}
+                  </p>
                 </div>
               </div>
             ))}

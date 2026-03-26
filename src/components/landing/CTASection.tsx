@@ -11,10 +11,10 @@ const CTASection = () => {
   };
 
   return (
-    <section className="py-24 bg-primary relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-primary/90 via-primary to-emerald-600 text-primary-foreground relative overflow-hidden">
       {/* Decorative circles */}
-      <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-primary-foreground/5 -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-primary-foreground/5 translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-white/5 dark:bg-white/5 -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-white/5 dark:bg-white/5 translate-y-1/2 -translate-x-1/2" />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div

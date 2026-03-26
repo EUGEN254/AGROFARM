@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Home, Mail, Lock, Chrome } from "lucide-react";
+import heroFarm from "@/assets/hero-farm.jpg";
 
 export default function Auth() {
   const { mode, role } = useParams();
@@ -125,17 +126,33 @@ export default function Auth() {
 
 function AuthShell({ title, onHome, children }) {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-background relative">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-background relative overflow-hidden">
+      
+      {/* BACKGROUND IMAGE LAYER */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-10"
+        style={{
+          backgroundImage: `url(${heroFarm})`,
+        }}
+      />
+
+      {/* DARK OVERLAY  */}
+      <div className="absolute inset-0 bg-background/80" />
+
+      {/* CONTENT */}
       <button
         onClick={onHome}
-        className="absolute top-4 left-10 flex items-center gap-2 text-muted-foreground hover:text-foreground"
+        className="absolute top-4 left-10 flex items-center gap-2 text-muted-foreground hover:text-foreground z-10"
       >
         <Home size={28} />
         <span className="text-lg font-bold">Home</span>
       </button>
 
-      <div className="w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6">{title}</h1>
+      <div className="w-full max-w-md relative z-10">
+        <h1 className="text-2xl font-bold mb-6 text-foreground">
+          {title}
+        </h1>
+
         {children}
       </div>
     </div>
