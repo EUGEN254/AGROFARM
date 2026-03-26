@@ -156,7 +156,7 @@ function AuthShell({ title, onHome, children }) {
         {children}
       </div>
     </div>
-  );
+  )
 }
 
 function AuthCard({ children }) {
