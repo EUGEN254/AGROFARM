@@ -27,7 +27,7 @@ export default function Auth() {
     e.preventDefault();
 
     if (isLogin) {
-      console.log("LOGIN", form);
+      navigate("/farmer");
       return;
     }
 
@@ -50,11 +50,19 @@ export default function Auth() {
     return (
       <AuthShell title="Welcome Back" onHome={goHome}>
         <AuthCard>
-          <GoogleButton onClick={handleGoogleAuth} text="Continue with Google" />
+          <GoogleButton
+            onClick={handleGoogleAuth}
+            text="Continue with Google"
+          />
 
           <Divider />
 
-          <AuthForm isLogin form={form} onChange={handleChange} onSubmit={handleSubmit} />
+          <AuthForm
+            isLogin
+            form={form}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+          />
 
           <SwitchLink
             text="Don’t have an account?"
@@ -73,7 +81,10 @@ export default function Auth() {
     return (
       <AuthShell title="Join as a member" onHome={goHome}>
         <AuthCard>
-          <Button onClick={() => navigate("/auth/signup/farmer")} className="w-full">
+          <Button
+            onClick={() => navigate("/auth/signup/farmer")}
+            className="w-full"
+          >
             Join as Farmer
           </Button>
 
@@ -108,7 +119,12 @@ export default function Auth() {
 
         <Divider />
 
-        <AuthForm isLogin={false} form={form} onChange={handleChange} onSubmit={handleSubmit} />
+        <AuthForm
+          isLogin={false}
+          form={form}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+        />
 
         <SwitchLink
           text="Already have an account?"
@@ -121,13 +137,12 @@ export default function Auth() {
 }
 
 /* -------------------------
-   UI COMPONENTS (CLEAN REUSE)
+   UI COMPONENTS 
 --------------------------*/
 
 function AuthShell({ title, onHome, children }) {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-background relative overflow-hidden">
-      
       {/* BACKGROUND IMAGE LAYER */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-10"
@@ -149,14 +164,12 @@ function AuthShell({ title, onHome, children }) {
       </button>
 
       <div className="w-full max-w-md relative z-10">
-        <h1 className="text-2xl font-bold mb-6 text-foreground">
-          {title}
-        </h1>
+        <h1 className="text-2xl font-bold mb-6 text-foreground">{title}</h1>
 
         {children}
       </div>
     </div>
-  )
+  );
 }
 
 function AuthCard({ children }) {
@@ -190,11 +203,19 @@ function AuthForm({ isLogin, form, onChange, onSubmit }) {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       {!isLogin && (
-        <Input name="name" placeholder="Full Name" value={form.name} onChange={onChange} />
+        <Input
+          name="name"
+          placeholder="Full Name"
+          value={form.name}
+          onChange={onChange}
+        />
       )}
 
       <div className="relative">
-        <Mail className="absolute left-3 top-3 text-muted-foreground" size={16} />
+        <Mail
+          className="absolute left-3 top-3 text-muted-foreground"
+          size={16}
+        />
         <Input
           name="email"
           type="email"
@@ -206,7 +227,10 @@ function AuthForm({ isLogin, form, onChange, onSubmit }) {
       </div>
 
       <div className="relative">
-        <Lock className="absolute left-3 top-3 text-muted-foreground" size={16} />
+        <Lock
+          className="absolute left-3 top-3 text-muted-foreground"
+          size={16}
+        />
         <Input
           name="password"
           type="password"
