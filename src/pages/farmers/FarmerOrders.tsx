@@ -66,7 +66,6 @@ export default function FarmerOrders() {
 
   return (
     <div className="space-y-6">
-
       {/* HEADER */}
       <div>
         <h1 className="text-2xl font-bold">Orders</h1>
@@ -96,9 +95,7 @@ export default function FarmerOrders() {
 
               return (
                 <TableRow key={order.id}>
-                  <TableCell className="font-medium">
-                    {order.id}
-                  </TableCell>
+                  <TableCell className="font-medium">{order.id}</TableCell>
 
                   <TableCell>{order.product}</TableCell>
                   <TableCell>{order.buyer}</TableCell>
@@ -124,13 +121,9 @@ export default function FarmerOrders() {
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
 
-                        <DropdownMenuItem>
-                          View Details
-                        </DropdownMenuItem>
+                        <DropdownMenuItem>View Details</DropdownMenuItem>
 
-                        <DropdownMenuItem>
-                          Mark as Completed
-                        </DropdownMenuItem>
+                        <DropdownMenuItem>Mark as Completed</DropdownMenuItem>
 
                         <DropdownMenuItem className="text-destructive">
                           Cancel Order
@@ -144,7 +137,6 @@ export default function FarmerOrders() {
           </TableBody>
         </Table>
       </div>
-
     </div>
   );
 }

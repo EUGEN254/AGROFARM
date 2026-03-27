@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Package,
@@ -8,27 +8,74 @@ import {
   Settings,
   Menu,
   X,
-  Sun,
-  Moon,
   User,
+  Boxes,
+  BarChart3,
+  Wallet,
+  Star,
+  Truck,
+  Tag,
+  Bell,
 } from "lucide-react";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "@/components/ui/dropdown-menu";
+
+import FarmerSidebar from "@/components/farmer/FarmerSidebar";
+import SidebarContent from "@/components/farmer/SidebarContent";
+
 const links = [
-  { label: "Dashboard", icon: LayoutDashboard, path: "/farmer" },
-  { label: "My Listings", icon: Package, path: "/farmer/listings" },
-  { label: "Orders", icon: ShoppingCart, path: "/farmer/orders" },
-  { label: "Messages", icon: MessageSquare, path: "/farmer/messages" },
-  { label: "Settings", icon: Settings, path: "/farmer/settings" },
+  {
+    section: "Overview",
+    items: [
+      { label: "Dashboard", icon: LayoutDashboard, path: "/farmer" },
+      { label: "Analytics", icon: BarChart3, path: "/farmer/analytics" },
+    ],
+  },
+  {
+    section: "Products",
+    items: [
+      { label: "Listings", icon: Package, path: "/farmer/listings" },
+      { label: "Inventory", icon: Boxes, path: "/farmer/inventory" },
+      { label: "Promotions", icon: Tag, path: "/farmer/promotions" },
+    ],
+  },
+  {
+    section: "Orders",
+    items: [
+      { label: "Orders", icon: ShoppingCart, path: "/farmer/orders" },
+      { label: "Deliveries", icon: Truck, path: "/farmer/deliveries" },
+    ],
+  },
+  {
+    section: "Communication",
+    items: [
+      { label: "Messages", icon: MessageSquare, path: "/farmer/messages" },
+      { label: "Reviews", icon: Star, path: "/farmer/reviews" },
+    ],
+  },
+  {
+    section: "Finance",
+    items: [{ label: "Earnings", icon: Wallet, path: "/farmer/earnings" }],
+  },
 ];
 
 export default function FarmerLayout() {
-  const location = useLocation();
+  const navigate = useNavigate();
 
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -36,6 +83,8 @@ export default function FarmerLayout() {
   const user = {
     name: "John Farmer",
   };
+
+  const handleLogout = () => navigate("/");
 
   return (
     <div className="h-screen flex flex-col md:flex-row bg-background overflow-hidden">
@@ -47,67 +96,72 @@ export default function FarmerLayout() {
 
         <h1 className="font-bold">Farmer</h1>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div>
-              <ThemeToggle />
-            </div>
-          </TooltipTrigger>
-          <TooltipContent>Toggle theme</TooltipContent>
-        </Tooltip>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-2 rounded-md hover:bg-muted">
+                <User size={18} />
+              </button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>
+                <div className="flex flex-col">
+                  <span className="font-medium">{user.name}</span>
+                  <span className="text-xs text-muted-foreground">
+                    john@email.com
+                  </span>
+                </div>
+              </DropdownMenuLabel>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem onClick={() => navigate("/farmer/profile")}>
+                <User className="mr-2" size={16} />
+                Profile
+              </DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => navigate("/farmer/settings")}>
+                <Settings className="mr-2" size={16} />
+                Settings
+              </DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => navigate("/farmer/support")}>
+                <MessageSquare className="mr-2" size={16} />
+                Support
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem onClick={handleLogout} className="text-red-500">
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       {/* ================= SIDEBAR (DESKTOP) ================= */}
-      <aside
-        className={`hidden md:flex flex-col border-r bg-card h-full transition-all duration-300 ${
-          collapsed ? "w-20" : "w-64"
-        }`}
-      >
-        {/* HEADER */}
-        <div className="flex items-center justify-between p-4">
-          {!collapsed && <h1 className="font-bold">Farmer Panel</h1>}
-
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="p-2 hover:bg-muted rounded-md"
-          >
-            <Menu size={18} />
-          </button>
-        </div>
-
-        {/* NAV */}
-        <nav className="flex-1 space-y-2 px-2">
-          {links.map((link) => {
-            const active = location.pathname.startsWith(link.path);
-
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${
-                  active
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-muted"
-                }`}
-              >
-                <link.icon size={18} />
-                {!collapsed && link.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* FOOTER */}
-        <div className="p-4 border-t text-sm flex items-center gap-2">
-          <User size={18} />
-          {!collapsed && user.name}
-        </div>
-      </aside>
+      <FarmerSidebar
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
+        links={links}
+        user={user}
+      />
 
       {/* ================= MOBILE SIDEBAR DRAWER ================= */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex">
-          <div className="w-64 bg-card h-full p-4 flex flex-col">
+        <div className="fixed inset-0 z-50 flex">
+          {/* overlay */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setMobileOpen(false)}
+          />
+
+          {/* drawer */}
+          <div className="relative w-64 bg-card h-full p-4 flex flex-col z-10">
             <div className="flex justify-between items-center mb-4">
               <h2 className="font-bold">Menu</h2>
               <button onClick={() => setMobileOpen(false)}>
@@ -115,49 +169,39 @@ export default function FarmerLayout() {
               </button>
             </div>
 
-            <nav className="space-y-2 flex-1">
-              {links.map((link) => {
-                const active = location.pathname.startsWith(link.path);
-
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm ${
-                      active
-                        ? "bg-primary text-primary-foreground"
-                        : "hover:bg-muted"
-                    }`}
-                  >
-                    <link.icon size={18} />
-                    {link.label}
-                  </Link>
-                );
-              })}
-            </nav>
+            <div className="flex-1 overflow-y-auto">
+              <SidebarContent
+                links={links}
+                onNavigate={() => setMobileOpen(false)}
+              />
+            </div>
 
             <div className="border-t pt-4 text-sm flex items-center gap-2">
               <User size={18} />
               {user.name}
             </div>
           </div>
-
-          <div className="flex-1" onClick={() => setMobileOpen(false)} />
         </div>
       )}
 
       {/* ================= MAIN AREA ================= */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">
-        {/* TOP NAVBAR (DESKTOP + TABLET) */}
+        {/* TOP BAR (DESKTOP) */}
         <header className="hidden md:flex items-center justify-between px-6 py-3 border-b bg-card">
-          {/* left: page title */}
-          <h2 className="font-semibold text-sm text-muted-foreground">
+          <h2 className="text-sm text-muted-foreground font-semibold">
             Farmer Dashboard
           </h2>
 
-          {/* right: user + actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 ">
+            <div
+              onClick={() => navigate("/farmer/notifications")}
+              className="relative hover:cursor-pointer"
+            >
+              <Bell size={26} className="text-muted-foreground" />
+              <span className="absolute -top-2  left-3  bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                3
+              </span>
+            </div>
             <Tooltip>
               <TooltipTrigger asChild>
                 <div>
@@ -167,14 +211,44 @@ export default function FarmerLayout() {
               <TooltipContent>Toggle theme</TooltipContent>
             </Tooltip>
 
-            <div className="flex items-center gap-2 text-sm">
-              <User size={18} />
-              {user.name}
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted">
+                  <User size={18} />
+                  {user.name}
+                </button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem onClick={() => navigate("/farmer/profile")}>
+                  Profile
+                </DropdownMenuItem>
+
+                <DropdownMenuItem onClick={() => navigate("/farmer/settings")}>
+                  Settings
+                </DropdownMenuItem>
+
+                <DropdownMenuItem onClick={() => navigate("/farmer/support")}>
+                  Support
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="text-red-500"
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 
-        {/* PAGE CONTENT (ONLY SCROLL AREA) */}
+        {/* PAGE CONTENT */}
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <Outlet />
         </main>
