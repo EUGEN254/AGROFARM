@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -37,6 +37,7 @@ import {
 
 import FarmerSidebar from "@/components/farmer/FarmerSidebar";
 import SidebarContent from "@/components/farmer/SidebarContent";
+import { useAuth } from "@/contexts/AuthContext";
 
 const links = [
   {
@@ -76,15 +77,36 @@ const links = [
 
 export default function FarmerLayout() {
   const navigate = useNavigate();
-
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, logout, loading } = useAuth();
 
-  const user = {
-    name: "John Farmer",
+  // Redirect if no user is found (protected route logic)
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
+
+  const handleLogout = async () => {
+    await logout();
+    // Navigation is handled in the logout function or here
+    navigate("/");
   };
 
-  const handleLogout = () => navigate("/");
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Don't render anything if no user (will redirect via useEffect)
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="h-screen flex flex-col md:flex-row bg-background overflow-hidden">
@@ -109,9 +131,9 @@ export default function FarmerLayout() {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
                 <div className="flex flex-col">
-                  <span className="font-medium">{user.name}</span>
+                  <span className="font-medium">{user?.name || "User"}</span>
                   <span className="text-xs text-muted-foreground">
-                    john@email.com
+                    {user?.email || ""}
                   </span>
                 </div>
               </DropdownMenuLabel>
@@ -178,7 +200,7 @@ export default function FarmerLayout() {
 
             <div className="border-t pt-4 text-sm flex items-center gap-2">
               <User size={18} />
-              {user.name}
+              {user?.name || "User"}
             </div>
           </div>
         </div>
@@ -215,12 +237,12 @@ export default function FarmerLayout() {
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted">
                   <User size={18} />
-                  {user.name}
+                  {user?.name || "User"}
                 </button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+                <DropdownMenuLabel>{user?.name || "User"}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem onClick={() => navigate("/farmer/profile")}>

@@ -22,6 +22,7 @@ import FarmerDeliveries from "./pages/farmers/FarmerDeliveries.tsx";
 import FarmerInventory from "./pages/farmers/FarmerInventory.tsx";
 import FarmerNotifications from "./pages/farmers/FarmerNotifications.tsx";
 import FarmerAnalytics from "./pages/farmers/FarmerAnalytics.tsx";
+import VerifyEmail from "./pages/VerifyEmail.tsx";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth/:mode/:role?" element={<Auth />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/farmer" element={<FarmerLayout />}>
             <Route index element={<FarmerDashboard />} />
 

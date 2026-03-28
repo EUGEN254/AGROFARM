@@ -1,3 +1,4 @@
+// components/ui/toaster.tsx
 import { useToast } from "@/hooks/use-toast";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "@/components/ui/toast";
 
@@ -18,7 +19,7 @@ export function Toaster() {
           </Toast>
         );
       })}
-      <ToastViewport />
+      <ToastViewport className="fixed top-0 right-0 flex flex-col p-4 gap-2 w-full max-w-sm m-0 list-none z-[100] outline-none" />
     </ToastProvider>
   );
 }
